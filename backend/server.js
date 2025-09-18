@@ -70,14 +70,22 @@ app.get(`${API_PREFIX}/career/roadmap`, (req, res) => {
 
 //for comp
 app.get(`${API_PREFIX}/competitions`, (req, res) => {
-  const rows = db.prepare('SELECT * FROM competitions').all();
-  res.json({ competitions: rows });
+  const competitions = [
+    { id: 1, title: "AICTE Hackathon 2025", link: "https://www.aicte-india.org/hackathon" },
+    { id: 2, title: "Google Cloud Challenge", link: "https://cloud.google.com/training/challenges" },
+    { id: 3, title: "Smart India Hackathon", link: "https://www.sih.gov.in/" }
+  ];
+  res.json({ competitions });
 });
 
 //for intern
 app.get(`${API_PREFIX}/internships`, (req, res) => {
-  const rows = db.prepare('SELECT * FROM internships').all();
-  res.json({ internships: rows });
+  const internships = [
+    { id: 1, title: "AICTE Internship Portal", link: "https://internship.aicte-india.org/" },
+    { id: 2, title: "Microsoft Explore Internship", link: "https://careers.microsoft.com/students" },
+    { id: 3, title: "Google Summer of Code", link: "https://summerofcode.withgoogle.com/" }
+  ];
+  res.json({ internships });
 });
 
 //(13-17)
@@ -106,14 +114,20 @@ app.get(`${API_PREFIX}/college/features`, (req, res) => {
 });
 
 app.get(`${API_PREFIX}/opportunities`, (req, res) => {
-  // Combine competitions and internships if you want
-  const competitions = db.prepare('SELECT * FROM competitions').all();
-  const internships = db.prepare('SELECT * FROM internships').all();
+  const competitions = [
+    { id: 1, title: "AICTE Hackathon 2025", link: "https://www.aicte-india.org/hackathon" },
+    { id: 2, title: "Google Cloud Challenge", link: "https://cloud.google.com/training/challenges" },
+    { id: 3, title: "Smart India Hackathon", link: "https://www.sih.gov.in/" }
+  ];
+  const internships = [
+    { id: 1, title: "AICTE Internship Portal", link: "https://internship.aicte-india.org/" },
+    { id: 2, title: "Microsoft Explore Internship", link: "https://careers.microsoft.com/students" },
+    { id: 3, title: "Google Summer of Code", link: "https://summerofcode.withgoogle.com/" }
+  ];
 
-  // Send as a single list
   const opportunities = [
-    ...competitions.map(c => ({ id: c.id, title: c.title, type: 'Competition' })),
-    ...internships.map(i => ({ id: i.id, title: i.title, type: 'Internship' }))
+    ...competitions.map(c => ({ id: c.id, title: c.title, type: 'Competition', link: c.link })),
+    ...internships.map(i => ({ id: i.id, title: i.title, type: 'Internship', link: i.link }))
   ];
 
   res.json(opportunities);
