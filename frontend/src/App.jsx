@@ -1,35 +1,29 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Routes, Route, Link } from "react-router-dom";
+import Home from "./pages/Home";
+import Dashboard from "./pages/Dashboard";
+import Competitions from "./pages/Competitions";
+import Internships from "./pages/Internships";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div>
+      {/* Navbar */}
+      <nav style={{ padding: "1rem", background: "#222" }}>
+        <Link to="/" style={{ color: "white", marginRight: "1rem" }}>Home</Link>
+        <Link to="/dashboard" style={{ color: "white", marginRight: "1rem" }}>Dashboard</Link>
+        <Link to="/competitions" style={{ color: "white", marginRight: "1rem" }}>Competitions</Link>
+        <Link to="/internships" style={{ color: "white" }}>Internships</Link>
+      </nav>
+
+      {/* Routes */}
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/competitions" element={<Competitions />} />
+        <Route path="/internships" element={<Internships />} />
+      </Routes>
+    </div>
+  );
 }
 
-export default App
+export default App;
