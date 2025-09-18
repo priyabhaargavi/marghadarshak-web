@@ -8,9 +8,9 @@ app.use(cors());
 app.use(express.json());
 const API_PREFIX = '/api';
 
-//auth----
+// ================= AUTH =================
 
-//for registrr
+// Register
 app.post(`${API_PREFIX}/auth/register`, async (req, res) => {
   const { username, password, age_group } = req.body;
   if (!username || !password) {
@@ -27,7 +27,7 @@ app.post(`${API_PREFIX}/auth/register`, async (req, res) => {
   }
 });
 
-//forlogin
+// Login
 app.post(`${API_PREFIX}/auth/login`, async (req, res) => {
   const { username, password } = req.body;
   const row = db.prepare('SELECT * FROM users WHERE username = ?').get(username);
@@ -39,7 +39,7 @@ app.post(`${API_PREFIX}/auth/login`, async (req, res) => {
   res.json({ user: { id: row.id, username: row.username, age_group: row.age_group, interests: row.interests } });
 });
 
-//forprofile
+// ================= PROFILE =================
 
 app.get(`${API_PREFIX}/profile/:id`, (req, res) => {
   const id = req.params.id;
@@ -56,7 +56,7 @@ app.post(`${API_PREFIX}/profile/:id`, (req, res) => {
   res.json({ user });
 });
 
-// forcareer roadmap
+// ================= CAREER ROADMAP =================
 
 app.get(`${API_PREFIX}/career/roadmap`, (req, res) => {
   const roadmap = [
@@ -68,7 +68,8 @@ app.get(`${API_PREFIX}/career/roadmap`, (req, res) => {
   res.json({ roadmap });
 });
 
-//for comp
+// ================= COMPETITIONS =================
+
 app.get(`${API_PREFIX}/competitions`, (req, res) => {
   const competitions = [
     { id: 1, title: "AICTE Hackathon 2025", link: "https://www.aicte-india.org/hackathon" },
@@ -78,7 +79,8 @@ app.get(`${API_PREFIX}/competitions`, (req, res) => {
   res.json({ competitions });
 });
 
-//for intern
+// ================= INTERNSHIPS =================
+
 app.get(`${API_PREFIX}/internships`, (req, res) => {
   const internships = [
     { id: 1, title: "AICTE Internship Portal", link: "https://internship.aicte-india.org/" },
@@ -88,7 +90,8 @@ app.get(`${API_PREFIX}/internships`, (req, res) => {
   res.json({ internships });
 });
 
-//(13-17)
+// ================= FEATURES (School 13-17) =================
+
 app.get(`${API_PREFIX}/school/features`, (req, res) => {
   res.json({
     features: [
@@ -100,7 +103,7 @@ app.get(`${API_PREFIX}/school/features`, (req, res) => {
   });
 });
 
-//17+
+// ================= FEATURES (College 17+) =================
 
 app.get(`${API_PREFIX}/college/features`, (req, res) => {
   res.json({
@@ -112,6 +115,8 @@ app.get(`${API_PREFIX}/college/features`, (req, res) => {
     ]
   });
 });
+
+// ================= OPPORTUNITIES =================
 
 app.get(`${API_PREFIX}/opportunities`, (req, res) => {
   const competitions = [
@@ -133,8 +138,44 @@ app.get(`${API_PREFIX}/opportunities`, (req, res) => {
   res.json(opportunities);
 });
 
-//start server
+// ================= RESOURCES BY INTEREST =================
+
+app.post(`${API_PREFIX}/resources`, (req, res) => {
+  const { interest } = req.body;
+  if (!interest) return res.status(400).json({ error: "Interest is required" });
+
+  const resources = {
+    "web development": [
+      { title: "MDN Web Docs", link: "https://developer.mozilla.org/" },
+      { title: "freeCodeCamp", link: "https://www.freecodecamp.org/" },
+      { title: "W3Schools", link: "https://www.w3schools.com/" }
+    ],
+    "ai": [
+      { title: "Google AI Guide", link: "https://ai.google/education/" },
+      { title: "Fast.ai", link: "https://www.fast.ai/" },
+      { title: "DeepLearning.ai", link: "https://www.deeplearning.ai/" }
+    ],
+    "cloud": [
+      { title: "AWS Training", link: "https://aws.amazon.com/training/" },
+      { title: "Azure Docs", link: "https://learn.microsoft.com/en-us/azure/" },
+      { title: "Google Cloud Training", link: "https://cloud.google.com/training" }
+    ],
+    "cybersecurity": [
+      { title: "OWASP", link: "https://owasp.org/" },
+      { title: "Cybrary", link: "https://www.cybrary.it/" },
+      { title: "TryHackMe", link: "https://tryhackme.com/" }
+    ]
+  };
+
+  const key = interest.toLowerCase();
+  if (resources[key]) {
+    res.json({ success: true, data: resources[key] });
+  } else {
+    res.json({ success: false, message: "No resources found for this interest." });
+  }
+});
+
+// ================= START SERVER =================
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log('API listening on', PORT));
-
