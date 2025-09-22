@@ -17,6 +17,7 @@ function App() {
         <Link to="/competitions" style={{ color: "white", marginRight: "1rem" }}>Competitions</Link>
         <Link to="/internships" style={{ color: "white", marginRight: "1rem" }}>Internships</Link>
         <Link to="/resources" style={{ color: "white" }}>Resources</Link> {/* ✅ new link */}
+        <Link to="/ai-roadmap" style={{ color: "white" }}>AI Roadmap</Link>
       </nav>
 
       {/* Routes */}
